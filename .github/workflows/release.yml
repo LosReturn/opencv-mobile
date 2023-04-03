@@ -92,7 +92,7 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
       with:
         tag_name: ${{ needs.setup.outputs.VERSION }}
         release_name: Release ${{ needs.setup.outputs.VERSION }}
@@ -102,7 +102,7 @@ jobs:
     - name: upload-ios-opencv4
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
         PACKAGENAME: opencv-mobile-4.6.0-ios
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
