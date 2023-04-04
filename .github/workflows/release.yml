@@ -120,13 +120,12 @@ jobs:
       with:
           path: opencv-mobile
           
-    - name: ls
-      run: |
-        ls
-        pwd
+    - name: sh
+      run: ｜
         cd ..
+        cd opencv-mobile
         ls
-        pwd
+      
       
     - name: Update Package.swift
       env:
