@@ -83,6 +83,10 @@ jobs:
     needs: [setup, ios-opencv4]
     runs-on: ubuntu-latest
     steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v3
+    
     - name: download
       uses: actions/download-artifact@v2
       with:
@@ -109,7 +113,10 @@ jobs:
         asset_path: artifacts/${{ env.PACKAGENAME }}/${{ env.PACKAGENAME }}.zip
         asset_name: ${{ env.PACKAGENAME }}.zip
         asset_content_type: application/zip
-
+    
+    - name: Get version
+      id: get_version
+      run: echo ::set-output name=VERSION::$(cat .version)
 
     - name: Update Package.swift
       run: |
