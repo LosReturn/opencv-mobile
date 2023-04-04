@@ -122,8 +122,7 @@ jobs:
           
     - name: sh
       run: |
-        cd ..
-        cd opencv-mobile
+        cd ../opencv-mobile/opencv-mobile
         ls
       
       
