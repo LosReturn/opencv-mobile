@@ -84,9 +84,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    - name: Checkout
-      uses: actions/checkout@v3
-    
     - name: download
       uses: actions/download-artifact@v2
       with:
@@ -114,10 +111,21 @@ jobs:
         asset_name: ${{ env.PACKAGENAME }}.zip
         asset_content_type: application/zip
     
-    - name: Get version
+    - name: ls
+      run: |
+        ls
+        cd ..
+        ls
+    
+    - name: get-version
       id: get_version
-      run: echo ::set-output name=VERSION::$(cat .version)
-
+      run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
+    
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+          path: opencv-mobile
+      
     - name: Update Package.swift
       run: |
           sed -i "s/let version = \".*\"/let version = \"${{ steps.get_version.outputs.VERSION }}\"/" Package.swift
