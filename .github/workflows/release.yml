@@ -125,12 +125,9 @@ jobs:
         PACKAGENAME: opencv-mobile-4.6.0-ios
       run: |
           sed -i "s/let version = \".*\"/let version = \"${{ steps.get_version.outputs.VERSION }}\"/" ../opencv-mobile/opencv-mobile/Package.swift
-          cat ../opencv-mobile/opencv-mobile/Package.swift
-          pwd 
+          cd artifacts/opencv-mobile-4.6.0-ios 
           ls
-          cd artifacts 
-          ls
-          sed -i "s/let checksum = \".*\"/let checksum = \"$(shasum -a 256 ${{ env.PACKAGENAME }}.zip | cut -d ' ' -f 1)\"/" ../opencv-mobile/opencv-mobile/Package.swift
+          sed -i "s/let checksum = \".*\"/let checksum = \"$(shasum -a 256 ${{ env.PACKAGENAME }}.zip | cut -d ' ' -f 1)\"/" ../../../opencv-mobile/opencv-mobile/Package.swift
     - name: Commit and push
       run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
