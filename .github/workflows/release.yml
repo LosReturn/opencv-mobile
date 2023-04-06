@@ -126,9 +126,8 @@ jobs:
       run: |
           cd ../opencv-mobile/opencv-mobile
           ls
+          pwd
           sed -i "s/let version = \".*\"/let version = \"${{ steps.get_version.outputs.VERSION }}\"/" Package.swift
-          cd ../../../artifacts
-          ls
           sed -i "s/let checksum = \".*\"/let checksum = \"$(shasum -a 256 ${{ env.PACKAGENAME }}.zip | cut -d ' ' -f 1)\"/" Package.swift
     - name: Commit and push
       run: |
