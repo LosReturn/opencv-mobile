@@ -127,14 +127,18 @@ jobs:
           sed -i "s/let version = \".*\"/let version = \"${{ steps.get_version.outputs.VERSION }}\"/" ./opencv-mobile/Package.swift
           cd artifacts/opencv-mobile-4.6.0-ios 
           sed -i "s/let checksum = \".*\"/let checksum = \"$(shasum -a 256 ${{ env.PACKAGENAME }}.zip | cut -d ' ' -f 1)\"/" ../../../opencv-mobile/opencv-mobile/Package.swift
-    - name: Commit and push
+    - name: Commit
       run: |
           cd opencv-mobile 
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions"
           git add Package.swift
-          git commit -m "Update Package.swift"
-          git push origin HEAD:master
+          git commit -m "Update Package.swift" -a
+    
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.TOKEN }}
 
 
 
