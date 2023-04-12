@@ -37,6 +37,7 @@ jobs:
         patch -p1 -i ../opencv-4.6.0-no-zlib.patch
         rm -rf modules/highgui
         cp -r ../highgui modules/
+        
     - name: build-ios
       run: |
         cd opencv-${{ env.OPENCV_VERSION }}
@@ -47,6 +48,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=install -DCMAKE_BUILD_TYPE=Release `cat ../../opencv4_cmake_options.txt` -DBUILD_opencv_world=ON -DOPENCV_DISABLE_FILESYSTEM_SUPPORT=ON ..
         cmake --build . -j 3
         cmake --build . --target install
+        
     - name: build-simulator
       run: |
         cd opencv-${{ env.OPENCV_VERSION }}
@@ -57,6 +59,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=install -DCMAKE_BUILD_TYPE=Release `cat ../../opencv4_cmake_options.txt` -DBUILD_opencv_world=ON -DOPENCV_DISABLE_FILESYSTEM_SUPPORT=ON ..
         cmake --build . -j 3
         cmake --build . --target install
+        
     - name: package
       run: |
         rm -rf opencv2.framework
@@ -71,13 +74,12 @@ jobs:
         sed -e 's/__NAME__/OpenCV/g' -e 's/__IDENTIFIER__/org.opencv/g' -e 's/__VERSION__/${{ env.OPENCV_VERSION }}/g' Info.plist > opencv2.framework/Versions/A/Resources/Info.plist
         rm -f ${{ env.PACKAGENAME }}.zip
         zip -9 -y -r ${{ env.PACKAGENAME }}.zip opencv2.framework
+        
     - name: upload-zip
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.PACKAGENAME }}
         path: ${{ env.PACKAGENAME }}.zip
-
-  
 
   release:
     needs: [setup, ios-opencv4]
@@ -117,18 +119,19 @@ jobs:
     
     - name: Checkout
       uses: actions/checkout@v3
-      
+    
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: opencv-mobile-4.6.0-ios.zip
+
     - name: Update Package.swift
       env:
         PACKAGENAME: opencv-mobile-4.6.0-ios
       run: |
-          cd ..
-          ls
-          cd ..
-          ls
-          sed -i "s/let version = \".*\"/let version = \"${{ steps.get_version.outputs.VERSION }}\"/" ./Package.swift
-          cd artifacts/opencv-mobile-4.6.0-ios 
-          sed -i "s/let checksum = \".*\"/let checksum = \"$(shasum -a 256 ${{ env.PACKAGENAME }}.zip | cut -d ' ' -f 1)\"/" ../../../opencv-mobile/Package.swift
+          sed -i "s/let version = \".*\"/let version = \"${{ steps.get_version.outputs.VERSION }}\"/" Package.swift
+          sed -i "s/let checksum = \".*\"/let checksum = \"$(shasum -a 256 ${{ env.PACKAGENAME }}.zip | cut -d ' ' -f 1)\"/" Package.swift
+    
     - name: Commit
       run: |
           cd opencv-mobile 
