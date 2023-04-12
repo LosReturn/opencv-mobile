@@ -117,16 +117,14 @@ jobs:
     
     - name: Checkout
       uses: actions/checkout@v3
-      with:
-          path: opencv-mobile
       
     - name: Update Package.swift
       env:
         PACKAGENAME: opencv-mobile-4.6.0-ios
       run: |
-          sed -i "s/let version = \".*\"/let version = \"${{ steps.get_version.outputs.VERSION }}\"/" ./opencv-mobile/Package.swift
+          sed -i "s/let version = \".*\"/let version = \"${{ steps.get_version.outputs.VERSION }}\"/" ./Package.swift
           cd artifacts/opencv-mobile-4.6.0-ios 
-          sed -i "s/let checksum = \".*\"/let checksum = \"$(shasum -a 256 ${{ env.PACKAGENAME }}.zip | cut -d ' ' -f 1)\"/" ../../../opencv-mobile/opencv-mobile/Package.swift
+          sed -i "s/let checksum = \".*\"/let checksum = \"$(shasum -a 256 ${{ env.PACKAGENAME }}.zip | cut -d ' ' -f 1)\"/" ../../../opencv-mobile/Package.swift
     - name: Commit
       run: |
           cd opencv-mobile 
