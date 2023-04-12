@@ -123,6 +123,8 @@ jobs:
         PACKAGENAME: opencv-mobile-4.6.0-ios
       run: |
           ls
+          cd ..
+          ls
           sed -i "s/let version = \".*\"/let version = \"${{ steps.get_version.outputs.VERSION }}\"/" ./Package.swift
           cd artifacts/opencv-mobile-4.6.0-ios 
           sed -i "s/let checksum = \".*\"/let checksum = \"$(shasum -a 256 ${{ env.PACKAGENAME }}.zip | cut -d ' ' -f 1)\"/" ../../../opencv-mobile/Package.swift
