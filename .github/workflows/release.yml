@@ -122,6 +122,7 @@ jobs:
       env:
         PACKAGENAME: opencv-mobile-4.6.0-ios
       run: |
+          cd ..
           ls
           cd ..
           ls
