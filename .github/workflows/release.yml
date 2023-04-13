@@ -135,11 +135,7 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add Package.swift
           git commit -m "Update Package.swift" -a
-    
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.TOKEN }}
+          git push
 
 
 
