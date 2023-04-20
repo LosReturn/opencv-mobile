@@ -26,7 +26,6 @@ let package = Package(
                 .linkedFramework("CoreMedia"),
                 .linkedFramework("CoreVideo", .when(platforms: [.iOS])),
                 .linkedFramework("Accelerate", .when(platforms: [.iOS, .macOS])),
-                .linkedFramework("OpenCL", .when(platforms: [.macOS])),
                 .linkedLibrary("c++")
             ]
         )
