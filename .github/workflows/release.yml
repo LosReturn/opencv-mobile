@@ -121,22 +121,6 @@ jobs:
       run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
     
 
-    - name: Update Package.swift
-      env:
-        PACKAGENAME: opencv-mobile-4.6.0-ios
-      run: |
-          sed -i "s/let version = \".*\"/let version = \"${{ steps.get_version.outputs.VERSION }}\"/" Package.swift
-          ls
-          sed -i "s/let checksum = \".*\"/let checksum = \"$(shasum -a 256 ${{ env.PACKAGENAME }}.zip | cut -d ' ' -f 1)\"/" Package.swift
-    
-    - name: Commit
-      run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "GitHub Actions"
-          git add Package.swift
-          git commit -m "Update Package.swift" -a
-          git push
-
 
 
 
