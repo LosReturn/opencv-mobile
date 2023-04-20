@@ -1,3 +1,4 @@
+// swift-tools-version: 5.7
 import PackageDescription
 
 let version = "Release v16"
@@ -17,6 +18,18 @@ let package = Package(
         .binaryTarget(name: "opencv2",
                       url: "https://github.com/nihui/opencv-mobile/releases/download/\(version)/opencv-mobile-4.6.0-ios.zip"
                      ),
+        .target(
+            name: "opencv2-dependencies",
+            linkerSettings: [
+                .linkedFramework("AVFoundation"),
+                .linkedFramework("CoreImage"),
+                .linkedFramework("CoreMedia"),
+                .linkedFramework("CoreVideo", .when(platforms: [.iOS])),
+                .linkedFramework("Accelerate", .when(platforms: [.iOS, .macOS])),
+                .linkedFramework("OpenCL", .when(platforms: [.macOS])),
+                .linkedLibrary("c++")
+            ]
+        )
     ]
 )
 
