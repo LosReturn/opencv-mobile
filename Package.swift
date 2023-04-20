@@ -15,8 +15,8 @@ let package = Package(
     ],
     targets: [
         .binaryTarget(name: "opencv2",
-                      url: "https://github.com/nihui/opencv-mobile/releases/download/\(version)/opencv-mobile-4.6.0-ios.zip",
-                      checksum: checksum),
+                      url: "https://github.com/nihui/opencv-mobile/releases/download/\(version)/opencv-mobile-4.6.0-ios.zip"
+                     ),
     ]
 )
 
